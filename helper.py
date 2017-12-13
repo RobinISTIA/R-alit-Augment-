@@ -71,4 +71,25 @@ def create_K_prof(width, height, dX, dY, dZ, dx, dy):
 
     return K
 
-
+def world2pixels(world_coords, proj_matrix):
+    if len(world_coords.shape)==1 :
+        #Etape 1 projection par produit matriciel
+        pixel_coords_h=np.dot(proj_matrix, world_coords.T).T
+        #Etape 2 normalisation, pour chaque ligne (point x,y,z), on divise par le dernier terme (z)
+        #Remarque: on travaille sur l'ensemble des points (lignes) a chaque etape (optimisation)
+        pixel_coords_h[0] = pixel_coords_h[0] / pixel_coords_h[2]
+        pixel_coords_h[1] = pixel_coords_h[1] / pixel_coords_h[2]
+        pixel_coords_h[2] = pixel_coords_h[2] / pixel_coords_h[2]
+        #Etape 3 on ene conserve que les deux premieres coordonees (x et y)
+        pixel_coords = pixel_coords_h[0:2].astype(np.float32) #float32 sinon problèmes avec drawChessBoardCorner
+    elif len(world_coords.shape) == 2 :
+        #Etape 1 projection par produit matriciel
+        pixel_coords_h = np.dot(proj_matrix, world_coords.T).T
+        #Etape 2 normalisation, pour chaque ligne (point x,y,z), on divise par le dernier terme (z)
+        # Remarque: on travaille sur l'ensemble des points (lignes) a chaque etape (optimisation)
+        pixel_coords_h[:,0] = pixel_coords_h[:,0] / pixel_coords_h[:,2]
+        pixel_coords_h[:,1] = pixel_coords_h[:,1] / pixel_coords_h[:,2]
+        pixel_coords_h[:,2] = pixel_coords_h[:,2] / pixel_coords_h[:,2]
+        # Etape 3 on ene conserve que les deux premieres coordonees (x et y)
+        pixel_coords=pixel_coords_h[:,0:2].astype(np.float32)
+    return pixel_coords

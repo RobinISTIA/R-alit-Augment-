@@ -1,4 +1,4 @@
-# -*- coding: latin-1 -*-
+
 #########################################################
 #Author: Jean-Baptiste Fasquel, ISTIA, Angers University, France
 #Copyright (C) 2014 Jean-Baptiste Fasquel
@@ -11,6 +11,7 @@ import helper
 #REFERENCE IMAGE
 cap = cv2.VideoCapture('video_damier.m4v') #0 webcam integre
 pattern_size=(5,8) #Connaissance geometrie damier: nombre de cases en ligne et colonne
+
 while(cap.isOpened()): #e.g. cam unplugged
     ret, image = cap.read()
     if ret==True:
